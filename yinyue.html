@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+		@font-face {font-family: "iconfont";
+	    src: url('fonts/iconfont.eot?t=1471404582'); /* IE9*/
+	    src: url('fonts/iconfont.eot?t=1471404582#iefix') format('embedded-opentype'), /* IE6-IE8 */
+	    url('fonts/iconfont.woff?t=1471404582') format('woff'), /* chrome, firefox */
+	    url('fonts/iconfont.ttf?t=1471404582') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+	    url('fonts/iconfont.svg?t=1471404582#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+		.zhuangtai2,.zhuangtai3,.zhuangtai4,.zhuangtai5 {
+		    font-family:"iconfont" !important;
+		    font-size:2rem;
+		    font-style:normal;
+		    -webkit-font-smoothing: antialiased;
+		    -webkit-text-stroke-width: 0.2px;
+		    -moz-osx-font-smoothing: grayscale;
+		    color: palegreen;
+		}
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			table{
+				margin: 0;
+				padding: 0;
+			}
+			html{
+				font-size: 40px;
+				background: #054859;
+			}
+			#top{
+				width: 95%;
+				display: flex;
+				height: 3rem;
+				background: #3e5656;
+				color: #ffffff;
+				line-height: 3rem;
+				padding-left: 5%;
+			}
+			table{
+				width:100%;
+				padding-bottom: 5rem;
+				font-size:1.5rem;
+			}			
+			.musicInf{
+				width: 100%;
+				height: 5rem;
+				background: #054859;
+				border-bottom: #ffffff;
+				display: flex;
+				color: #ffffff;
+				border-bottom: 1px solid darkgray;
+			}
+			.xuhao{
+				width: 20%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.music{
+				width: 70%;				
+				align-items: center;
+				font-weight: bolder;
+			}
+			.music p{
+				height: 2.5rem;
+				line-height: 2.5rem;
+				width: 100%;
+			}
+			.delet{
+				width: 10%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			#zhuangtai{
+				width: 100%;
+				height: 5rem;
+				display: flex;
+				justify-content: space-around;
+				background: rgba(2,34,59,0.4);
+				position: fixed;
+				bottom:0;
+				display: none;
+			}
+			.zhuangtai1 img{
+				border-radius: 50%;
+			}
+			.zhuangtai1,.zhuangtai2,.zhuangtai3,.zhuangtai4,.zhuangtai5{
+				width: 15%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			#jindutiao{
+				height:100%;
+				width: 1%;
+				position: fixed;
+				left:0px;
+				top:0px;
+				background:paleturquoise;
+				display: none;
+			}
+			#jindutiao1{
+				width: 1%;
+				background: peru;
+				position: fixed;
+				left:0px;
+				top:0px;
+			}
+		</style>
+		<script src="jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var arr=[
+				{musicName:"怒放的生命",singer:"汪峰",musicSrc:"music/徐良 - 七秒钟的记忆.mp3"},
+				{musicName:"我的老家",singer:"刘德华",musicSrc:"music/徐良 - 情话.mp3"},
+				{musicName:"大中国",singer:"小马",musicSrc:"music/徐良 - 他的猫.ogg"},
+				{musicName:"怒放的生命",singer:"汪峰",musicSrc:"music/许嵩 - 小烦恼没什么大不了.mp3"},
+				{musicName:"我的老家",singer:"刘德华",musicSrc:"music/伊稀 - 少女心事.mp3"},
+				{musicName:"大中国",singer:"小马",musicSrc:"music/郑源 - 爱情里没有谁对谁错.ogg"},
+				{musicName:"怒放的生命",singer:"汪峰",musicSrc:"music/郑源 - 比心更痛的眼眸.mp3"},
+				{musicName:"我的老家",singer:"刘德华",musicSrc:"music/bg.mp3"},
+				{musicName:"大中国",singer:"小马",musicSrc:"music/bg.ogg"},
+				{musicName:"怒放的生命",singer:"汪峰",musicSrc:"music/test.mp3"},
+				{musicName:"我的老家",singer:"刘德华",musicSrc:"music/bg.mp3"},
+				{musicName:"大中国",singer:"小马",musicSrc:"music/bg.ogg"},
+				{musicName:"怒放的生命",singer:"汪峰",musicSrc:"music/test.mp3"},
+				{musicName:"我的老家",singer:"刘德华",musicSrc:"music/bg.mp3"},
+				{musicName:"大中国",singer:"小马",musicSrc:"music/bg.ogg"},
+				{musicName:"怒放的生命",singer:"汪峰",musicSrc:"music/test.mp3"},
+				{musicName:"我的老家",singer:"刘德华",musicSrc:"music/bg.mp3"},
+				{musicName:"大中国",singer:"小马",musicSrc:"music/bg.ogg"}
+			]
+			$(function(){
+				for(var i=0;i<arr.length;i++){
+					$("#list").append(
+						"<tr class='musicInf'><td class='xuhao'><span>"+(i+1)+"</span></td>"+
+						"<td class='music' onclick='listening("+i+")'><p>"+arr[i].musicName+"</p><p>"+
+						arr[i].singer+"</p></td>"+
+						"<td class='delet' onclick='deletmusic("+i+")'><img src='images/dele.jpg'></td></tr>"
+					)
+				}
+			})
+			var a=0;
+			//var length=300;
+			function listening(ord){
+				a=ord;
+				var aa=$(".bofang");			
+				aa.attr("src",arr[ord].musicSrc);
+				$("table tr").eq(ord).css("background","rgba(73,230,224,0.5)").siblings().css("background","#054859");
+				//$(".stop1").attr("src","images/next.gif");
+				$(".zhuangtai3").html("&#xe606;");
+				$("#zhuangtai").css("display","flex");
+				$("#jindutiao").css("display","flex");
+				setInterval("jindu()",1000)
+			}
+			function deletmusic(ord){
+				if(confirm("确定删除？")){
+					$("table tr").eq(ord).remove();
+				}
+			}
+			function pausesong(){
+				var aa=$(".bofang")[0];
+				if(aa.paused==true){
+					aa.play()
+					//$(".stop1").attr("src","images/next.gif")
+					$(".zhuangtai3").html("&#xe606;");
+				}else{
+					aa.pause();
+					//$(".stop1").attr("src","images/pause.gif")
+					$(".zhuangtai3").html("&#xe600;");
+				}
+			}
+			function nextsong(){
+				a=a+1;
+				var aa=$(".bofang");
+				aa.attr("src",arr[a].musicSrc);
+				$("table tr").eq(a).css("background","rgba(73,230,224,0.5)").siblings().css("background","#054859");
+			}
+			function lastsong(){
+				a=a-1;
+				var aa=$(".bofang");
+				aa.attr("src",arr[a].musicSrc);
+				$("table tr").eq(a).css("background","rgba(73,230,224,0.5)").siblings().css("background","#054859");
+			}
+			var height1=document.documentElement.clientHeight;
+			//console.log(height1);
+			function jindu(){
+				var aa=$(".bofang")[0];
+				var starttime=aa.currentTime;
+				var length=aa.duration;
+				var percent1=starttime/length;
+				//console.log(percent1);
+				$("#jindutiao1").css("height",percent1*height1)
+			}
+		</script>
+	</head>
+	<body>
+		<div id="top">
+			<span>我的收藏</span>
+		</div>
+		<table id="list">
+		</table>
+		<!--<div id="zhuangtai">
+			<div class="zhuangtai1"><audio class="bofang" autoplay="autoplay"></audio><img src="images/thumb.jpg"></div>
+			<div class="zhuangtai2"><img onclick="lastsong()" src="images/last.gif"></div>
+			<div class="zhuangtai3"><img onclick="pausesong()" class="stop1" src="images/pause.gif"></div>
+			<div class="zhuangtai4"><img onclick="nextsong()" src="images/next.gif"></div>
+			<div class="zhuangtai5"><img src="images/love.gif"></div>
+		</div>-->
+		
+		<div id="zhuangtai">
+			<div class="zhuangtai1"><audio class="bofang" autoplay="autoplay"></audio><img src="images/thumb.jpg"></div>
+			<div class="zhuangtai2" onclick="lastsong()">&#xe601;</div>
+			<div class="zhuangtai3" onclick="pausesong()">&#xe600;</div>
+			<div class="zhuangtai4" onclick="nextsong()">&#xe602;</div>
+			<div class="zhuangtai5">&#xe605;</div>
+		</div>
+		<div id="jindutiao">
+			<div id="jindutiao1"></div>
+		</div>
+	</body>
+</html>
