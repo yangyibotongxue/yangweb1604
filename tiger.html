@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="../jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        var userArr=[];
+        var ord;
+        function User(name,sex,age) {
+            this.name = name;
+            this.sex = sex;
+            this.age = age;
+        }
+        //添加表格信息
+        function addData(){
+            var name=$("#name").val();
+            if($("input[name='sex']").eq(0).attr("checked",true)){
+                var sex="男";
+            }else{
+                var sex="女";
+            }
+            var age=$("#age").val();
+            var str="<tr><td>"+name+"</td><td>"+sex+"</td><td>"+age+"</td><td><input type='button' class='delete' value='删除' /></td></tr>";
+            //显示在界面上
+            $(str).appendTo($("#t"));
+            //保存在localSrorage
+            var user = new User(name,sex,age);
+            userArr.push(user);
+            var str=JSON.stringify(userArr);
+            localStorage.setItem("userArr",str);
+            $("#name").val("");
+            $("#age").val("");
+            $(".delete").click(deleteData);
+        }
+        //删除表格信息
+        function deleteData(){
+            if(confirm("亲，您要删吗？")){
+                var that=this;
+                var index=$(".delete").index(this)-1;
+                //在外观上删除。
+                $(that).parents("tr").remove();
+                if(index>=0){
+                    //在数组里删除对应的元素
+                    userArr.splice(index,1);
+                    //把localStorage里的删除（把数组重新保存一下）
+                    var str = JSON.stringify(userArr);
+                    localStorage.setItem("userArr",str);
+                }
+            }
+        }
+        //显示保存的表格信息
+        function showData(){
+            //获取数据
+            var str=localStorage.getItem("userArr");
+            if(str!=null){
+                userArr=JSON.parse(str);
+                for(var i=0;i<userArr.length;i++){
+                    var str="<tr><td>"+userArr[i].name+"</td><td>"+userArr[i].sex+"</td><td>"+userArr[i].age+"</td><td><input class='delete' type='button' value='删除' /></td></tr>";
+                    //显示在界面上
+                    $(str).appendTo($("#t"));
+                }
+            }
+        }
+        function current(){
+            $(this).css("background","orange").siblings().css("background","#fff");
+            ord=$("tr").index(this)-2;
+            $("#name").val(userArr[ord].name);
+            $("#age").val(userArr[ord].age);
+            if(userArr[ord].sex=="男"){
+                $("input[name='sex']")[0].checked=true;
+            }else{
+                $("input[name='sex']")[1].checked=true;
+            }
+        }
+        function upData(){
+            var str=localStorage.getItem("userArr");
+            if(str!=null){
+                //修改localStorages
+                userArr=JSON.parse(str);
+                userArr[ord].name=$("#name").val();
+                userArr[ord].age=$("#age").val();
+                if($("input[name='sex']").eq(0).attr("checked")=="checked"){
+                    var sex="男";
+                }else{
+                    var sex="女";
+                }
+                userArr[ord].sex=sex;
+                //修改页面
+                $("tr").eq(ord+2).children().eq(0).html(userArr[ord].name);
+                if(sex=="男"){
+                    $("tr").eq(ord+2).children().eq(1).html("男");
+                }else{
+                    $("tr").eq(ord+2).children().eq(1).html("女");
+                }
+                $("tr").eq(ord+2).children().eq(2).html(userArr[ord].age);
+                $("tr").eq(ord+2).css("background","#fff")
+                //保存新的localStorage
+                localStorage.clear();
+                var str=JSON.stringify(userArr);
+                localStorage.setItem("userArr",str);
+            }
+        }
+        $(function(){
+            showData();
+            $("#tijiao").click(addData);
+            $(".delete").click(deleteData);
+            $("tr").click(current)
+            $("#updata").click(upData)
+            $("input[name='sex']").click(function(){
+                $(this).attr("checked","checked").siblings().attr("checked",false);
+            })
+        })
+    </script>
+    <style type="text/css">
+        *{
+            margin:0;
+            padding: 0;
+        }
+        #t{
+            border-collapse: collapse;
+
+        }
+        #t th,td{
+            width:100px ;
+            text-align: center;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+<table id="t">
+    <tr>
+        <th>姓名</th>
+        <th>性别</th>
+        <th>年龄</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td>锐萌萌</td>
+        <td>女</td>
+        <td>25</td>
+        <td><input class="delete" type="button" value="删除" /></td>
+    </tr>
+</table>
+<br />
+<p>姓名:<input id="name" type="text" /></p>
+<p>性别:<input type="radio" name="sex" checked="checked"/>男
+    <input type="radio" name="sex" />女</p>
+<p>年龄:<input id="age" type="number" min="18" max="65"/></p>
+<p><input type="button" id="tijiao" value="提交" /><input id="updata" type="button" value="修改"/></p>
+</body>
+</html>
